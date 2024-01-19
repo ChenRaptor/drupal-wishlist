@@ -1,0 +1,8 @@
+{
+	"name": "drupal/wishlist",
+	"description": "wishlish module for drupal 8",
+	"type": "drupal-custom-module",
+	"require": {
+		"fabpot/goutte": "^4.0"
+	}
+}
