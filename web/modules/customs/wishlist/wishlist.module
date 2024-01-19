@@ -1,0 +1,112 @@
+<?php
+
+use Drupal\Core\Session\AccountProxy;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
+
+function wishlist_theme($existing, $type, $theme, $path) {
+    return [
+        'wishlist_custom_template' => [
+            'variables' => ['test_var' => NULL],
+        ],
+    ];
+}
+
+
+function wishlist_check_access($admin) {
+    $current_user = Drupal::currentUser();
+    if (!$current_user instanceof AccountProxy) return false;
+
+    return $admin ? wishlist_check__admin_access($current_user) : true;
+}
+
+function wishlist_check__admin_access($current_user) {
+    return in_array('administrator', $current_user->getRoles()) ? true : false;
+}
+
+
+
+//wishlist form
+function wishlist_form_node_wishlist_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    $access = wishlist_check_access(true);
+    if (!$access) return;
+
+    $form['field_wishlist_owner']["widget"][0]["target_id"]["#access"] = FALSE;
+}
+function wishlist_form_node_wishlist_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    $access = wishlist_check_access(true);
+    if (!$access) return;
+
+    $form['field_wishlist_owner']["widget"][0]["target_id"]["#access"] = FALSE;
+    $form['revision_information']["#access"] = FALSE;
+}
+
+
+
+/**
+ * Implements hook_node_presave().
+**/
+function wishlist_node_presave(EntityInterface $entity): void {
+    if (!$entity instanceof EntityInterface) return;
+
+    if ($entity->bundle() === 'wishlist') {
+        if (!$entity->hasField('field_wishlist_owner')) return;
+    
+        $access = wishlist_check_access(true);
+        if (!$access) return;
+        
+        $current_user = Drupal::currentUser();
+        $entity->set('field_wishlist_owner', ["target_id" => $current_user->id()]);
+
+        
+    } else if ($entity->bundle() === 'wishlist_item') {
+
+        if (!$entity->hasField('field_product_wishlist')) return;
+
+        $access = wishlist_check_access(true);
+        if ($access) return;
+
+        $whishlist_id = Drupal::request()->query->get('wid');
+        if (empty($whishlist_id)) return;
+        
+        $entity->set('field_product_wishlist', ["target_id" => $whishlist_id]);
+    }
+}
+
+
+
+//wishlist-item form
+function wishlist_form_node_wishlist_item_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    $access = wishlist_check_access(true);
+    if ($access) return;
+
+    $form['field_product_wishlist']["widget"][0]["target_id"]["#access"] = FALSE;
+    $whishlist_id = Drupal::request()->query->get('wid');
+
+    if (!isset($whishlist_id) || empty($whishlist_id)){
+        Drupal::messenger()->addMessage("Vous ne pouvez pas crée d'item wishlist si vous n'avez pas de wishlist", 'error');
+        return (new RedirectResponse('/'))->send(); 
+    } 
+
+    
+    $owner = Node::load($whishlist_id)->get('field_wishlist_owner')->target_id;
+
+    if (Drupal::currentUser()->id() != $owner){
+        Drupal::messenger()->addMessage("Vous ne pouvez pas crée d'item wishlist si vous n'êtes pas le propriétaire de la wishlist", 'error');
+        return (new RedirectResponse('/'))->send(); 
+    }
+}
+
+function wishlist_node_wishlist_item_form_alter(&$form, FormStateInterface $form_state, $form_id) {    
+    $access = wishlist_check_access(true);
+    if ($access) return;
+
+    $form['field_product_wishlist']["widget"][0]["target_id"]["#access"] = FALSE;
+}
+
+
+
+?>
