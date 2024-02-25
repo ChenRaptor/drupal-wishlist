@@ -24,7 +24,8 @@
       default_row_class ? 'views-row',
     ]
   %}
+  {# Ajouter la classe 'box-item' à la div parent #}
   <div{{ row.attributes.addClass(row_classes) }}>
-    {{- row.content -}}
+    <p>{{- row.content -}}</p>
   </div>
 {% endfor %}
