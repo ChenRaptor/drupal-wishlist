@@ -18,6 +18,23 @@
     --container-max-width: 1300px;
 }
 
+.bar-white {
+  background-color: #fff;
+  width: 50px;
+  height: 8px;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+
+.bar-primary {
+  background-color: var(--primary);
+  width: 50px;
+  height: 8px;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
 .bar-primary-light {
     background-color: var(--primary-light);
     width: 50px;
@@ -28,6 +45,14 @@
 
 .bar-primary-extra-light {
   background-color: var(--primary-extra-light);
+  width: 50px;
+  height: 8px;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.bar-secondary {
+  background-color: var(--secondary);
   width: 50px;
   height: 8px;
   margin-bottom: 1.5rem;
@@ -86,14 +111,19 @@
   margin-top: 1rem;
 }
 
-.box-item {
-  width: 12rem;
-  height: 12rem;
-  border: var(--primary-dark) 2px solid;
+.secondary-button {
+  background: var(--secondary);
+  color: #fff;
+  border-radius: 10px;
+  text-decoration: none;
+  padding: 8px 16px;
+  font-size: 22px;
+  margin-top: 1rem;
 }
-.view-content {
-  display: flex;
-  gap: 1rem;
+
+.my-2 {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
 }
 
 .menu a {
@@ -129,6 +159,20 @@ img {
 
 }
 
+.footer-container-section {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10rem;
+  color: #fff;
+}
+.footer-container-section > div > div {
+  display: flex;
+  gap: 1rem;
+}
+.footer-container-section svg {
+  fill: #fff;
+  height: 3rem;
+}
 .fidelity-banner {
   border: var(--primary) 2px solid;
   background: var(--primary-extra-light);
@@ -136,16 +180,75 @@ img {
   align-items: center;
   justify-content: space-evenly;
   text-align: center;
+  padding: 4rem;
+  border-left: 0;
+  border-right: 0;
 }
 
-@media screen and (min-width: 1200px) {
-    .view-content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2.5rem;
-        padding: 2.5rem;
-        box-sizing: border-box;
-    }
+.fidelity-banner > div {
+  margin: 0 30px;
+}
+
+.fidelity-banner p {
+  color: var(--primary-dark);
+}
+
+.fidelity-banner svg{
+  height: 4rem;
+  width: 4rem;
+  fill: var(--primary);
+}
+
+
+.container-home-pannel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 50px;
+}
+
+.container-home-pannel-left {
+  background: var(--secondary-light);
+  padding: 2rem;
+  width: 50%;
+  height: 450px;
+  max-width: 700px;
+}
+
+.container-home-pannel-left > div {
+  display: flex;
+  align-items: left;
+  gap: 2rem;
+}
+
+.container-home-pannel-right > div {
+  display: flex;
+  align-items: left;
+  gap: 2rem;
+}
+
+.container-home-pannel-right {
+  background: var(--primary-extra-light);
+  padding: 2rem;
+  width: 50%;
+  height: 450px;
+  max-width: 700px;
+}
+
+.view-product-home-page .view-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  padding: 2.5rem;
+  box-sizing: border-box;
+}
+
+.view-product-home-page .views-row {
+  width: 12rem;
+  height: 12rem;
+  border: #e5e5e5 2px solid;
+  border-radius: 15px;
 }
 
 .home-banner {
