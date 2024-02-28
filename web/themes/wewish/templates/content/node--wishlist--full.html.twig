@@ -83,8 +83,9 @@
   <div{{ content_attributes.addClass('node__content', 'wishlist') }}>
     <section class="banner-section">
         {# {{ content.field_banner_image }}   #}
+
+        {{ label }}
         {{ content.field_accroche }}
-        {{ content.field_wishlist_owner }}  
 
         <div>
             <a class="use-ajax" data-dialog-type="modal" href="/wishlist/popin-scrap?wid={{ node.id() }}">Add a product</a>
@@ -92,5 +93,7 @@
    </section>
   </div>
 </div>
+
+
 
 
